@@ -1,5 +1,4 @@
 _build
-erlang.mk
 .erlang.mk
 .eunit
 deps

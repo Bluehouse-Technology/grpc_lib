@@ -1,4 +1,4 @@
-# lib_grpc
+# grpc_lib
 
 A small library of some functions that are shared between the grpc
 application (gRPC server in Erlang) and the grpc_client application (gRPC 
@@ -12,8 +12,8 @@ with:
 make
 ```
 
-`make doc` can be used to generate documentation for the individual
-modules from edoc comments in thos modules.
+`make edoc` can be used to generate documentation for the individual
+modules from edoc comments in those modules.
 
 See the [erlang.mk documentation](https://erlang.mk/guide/installation.html#_on_windows) for
 an explanation on how the tool can be used in a Windows environment.
