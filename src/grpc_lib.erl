@@ -50,7 +50,6 @@ encode_output(ServiceName, RpcName, DecoderModule, Msg) ->
 maybe_encode_header({Key, Value} = Header) ->
     case is_bin_header(Key) of
         true ->
-            io:format("key: ~p, encoded ~w~n", [Key, base64:encode(Value)]),
             {Key, base64:encode(Value)};
         false ->
             Header
@@ -61,7 +60,6 @@ maybe_encode_header({Key, Value} = Header) ->
     {grpc:metadata_key(), grpc:metadata_value()}.
 %% @doc Decode header from Base64 if the header name ends with "-bin".
 maybe_decode_header({Key, Value} = Header) ->
-    io:format("maybe decode, Key = ~p~n, value:~w~n", [Key, Value]),
     case is_bin_header(Key) of
         true ->
             {Key, decode(Value)};
