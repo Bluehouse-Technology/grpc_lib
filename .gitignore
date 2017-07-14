@@ -8,4 +8,5 @@ deps
 erl_crash.dump
 ebin/*.beam
 .rebar
+rebar.lock
 grpc_lib.d
