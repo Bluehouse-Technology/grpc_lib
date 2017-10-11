@@ -1,15 +1,20 @@
 # grpc_lib
 
-A small library of some functions that are shared between the grpc
-application (gRPC server in Erlang) and the grpc_client application (gRPC 
+A small library of some functions that are shared between the [grpc](https://github.com/Bluehouse-Technology/grpc)
+application (gRPC server in Erlang) and the [grpc_client](https://github.com/Bluehouse-Technology/grpc_client) application (gRPC 
 client in Erlang).
 
 ## Build
-gRPC uses [erlang.mk](https://erlang.mk/) as build tool. On Unix systems it can be built
+gRPC uses [erlang.mk](https://erlang.mk/) or rebar3. On Unix systems it can be built
 with: 
 
 ```
 make
+```
+
+or
+```
+rebar3 compile
 ```
 
 `make edoc` can be used to generate documentation for the individual
