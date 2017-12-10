@@ -9,7 +9,7 @@
   {env,[]},
   {modules, []},
 
-  {maintainers, ["Chandrashekhar Mullaparthi"]},
+  {maintainers, ["Chandrashekhar Mullaparthi", "Willem de Jong"]},
   {licenses, ["Apache 2.0"]},
   {links, [{"Github", "https://github.com/Bluehouse-Technology/grpc_lib"}]}
  ]}.
