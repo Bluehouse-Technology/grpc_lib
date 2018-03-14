@@ -30,9 +30,9 @@ file(Filename, Options) ->
     GPBModule = compile_pb(Filename, OtherOptions),
     case Generate of 
         client ->
-            write_client(GPBModule);
+            write_client(GPBModule, Options);
         server ->
-            write_server(GPBModule)
+            write_server(GPBModule, Options)
     end.
 
 %%% ============================================================================
@@ -41,24 +41,35 @@ file(Filename, Options) ->
 
 compile_pb(Filename, Options) ->
     ok = gpb_compile:file(Filename, [maps | Options ++ [{i, "."}]]),
-    CompiledPB = gpb_names:file_name_to_module_name(Filename, Options),
+    Module = gpb_names:file_name_to_module_name(Filename, Options),
+    CompiledPB = get_erl_outpath(atom_to_list(Module), Options),
     GpbInludeDir = filename:join(code:lib_dir(gpb), "include"),
     {ok, Module, Compiled} = compile:file(CompiledPB, 
                                           [binary, {i, GpbInludeDir}]),
     {module, _} = code:load_binary(Module, CompiledPB, Compiled),
     Module.
 
-write_server(Module) ->
+get_erl_outpath(ModuleName, Opts) ->
+    filename:join(get_erl_outdir(Opts), ModuleName ++ ".erl").
+
+get_erl_outdir(Opts) ->
+    proplists:get_value(o_erl, Opts, get_outdir(Opts)).
+
+get_outdir(Opts) ->
+    proplists:get_value(o, Opts, ".").
+
+write_server(Module, Opts) ->
     ModuleName = atom_to_list(Module) ++ "_server",
     Header = print_header(ModuleName),
     Exports = print_server_exports(Module),
     Messages = print_messages(Module),
     Decoder = print_decoder(Module),
     Services = print_services(Module, server),
-    ok = file:write_file(ModuleName ++ ".erl", [Header, Exports, Messages,
+    Path = get_erl_outpath(ModuleName, Opts),
+    ok = file:write_file(Path, [Header, Exports, Messages,
                                                 Decoder, Services]).
 
-write_client(Module) ->
+write_client(Module, Opts) ->
     ModuleName = atom_to_list(Module) ++ "_client",
     Header = print_header(ModuleName),
     Exports = print_client_exports(Module),
@@ -66,7 +77,8 @@ write_client(Module) ->
     Messages = print_messages(Module),
     Decoder = print_decoder(Module),
     Services = print_services(Module, client),
-    ok = file:write_file(ModuleName ++ ".erl", [Header, Exports, Messages,
+    Path = get_erl_outpath(ModuleName, Opts),
+    ok = file:write_file(Path, [Header, Exports, Messages,
                                                 TypeExports, Decoder,
                                                 Services]).
 
