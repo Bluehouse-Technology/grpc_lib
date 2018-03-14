@@ -41,7 +41,7 @@ file(Filename, Options) ->
 
 compile_pb(Filename, Options) ->
     ok = gpb_compile:file(Filename, [maps | Options ++ [{i, "."}]]),
-    CompiledPB =  filename:rootname(Filename) ++ ".erl",
+    CompiledPB = gpb_names:file_name_to_module_name(Filename, Options),
     GpbInludeDir = filename:join(code:lib_dir(gpb), "include"),
     {ok, Module, Compiled} = compile:file(CompiledPB, 
                                           [binary, {i, GpbInludeDir}]),
